@@ -6,33 +6,43 @@ An end-to-end production platform for predicting credit loan default risk, deliv
 
 ## 📐 Architecture Overview
 
-```mermaid
-flowchart TD
-    subgraph Data_Layer ["Data Layer"]
-        A[Home Credit Dataset] --> B[Preprocessor & Imputer]
-        B --> C[(SQLite Database: credit_risk.db)]
-    end
+## Architecture
 
-    subgraph ML_XAI_Layer ["ML & Explainability Layer"]
-        B --> D[LightGBM Model Engine]
-        D --> E[Default Risk Scoring & Tiering]
-        D --> F[SHAP TreeExplainer XAI]
-    end
+The platform follows this workflow:
 
-    subgraph Policy_Layer ["Rules Engine Layer"]
-        E --> G[Underwriting Policy Rules]
-    end
-
-    subgraph LLM_Layer ["Talk-to-Data Layer"]
-        C --> H[Gemini AI NL-to-SQL Engine]
-        H --> I[SQL Query Runner & Insight Generator]
-    end
-
-    subgraph UI_Layer ["Presentation & Container Layer"]
-        E & F & G & I --> J[Streamlit Multi-Section UI]
-        J --> K[Docker & Docker Compose Container]
-    end
-```
+```text
+Home Credit Dataset
+        |
+        v
+Data Loading & Preprocessing
+        |
+        +-----------------------+
+        |                       |
+        v                       v
+Machine Learning          SQLite Database
+        |                       |
+        v                       v
+LightGBM Model            Talk-to-Data
+        |                       |
+        v                       v
+Risk Prediction           Gemini LLM
+        |                       |
+        v                       v
+SHAP Explainability       SQL Generation
+        |                       |
+        |                       v
+        |                 SQL Validation
+        |                       |
+        |                       v
+        |                 Query Execution
+        |                       |
+        +-----------+-----------+
+                    |
+                    v
+              Streamlit UI
+                    |
+                    v
+                 Docker
 
 ### Component Breakdown
 1. **Data Ingestion & Preprocessing**: Cleans tabular data, handles missing features via median imputation, encodes categorical variables, and loads `application_train` into SQLite.
