@@ -6,10 +6,6 @@ An end-to-end production platform for predicting credit loan default risk, deliv
 
 ## 📐 Architecture Overview
 
-## Architecture
-
-The platform follows this workflow:
-
 ```text
 Home Credit Dataset
         |
@@ -43,6 +39,8 @@ SHAP Explainability       SQL Generation
                     |
                     v
                  Docker
+
+```
 
 ### Component Breakdown
 1. **Data Ingestion & Preprocessing**: Cleans tabular data, handles missing features via median imputation, encodes categorical variables, and loads `application_train` into SQLite.
