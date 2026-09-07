@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  credit-risk-platform:
+    build: .
+    container_name: credit-risk-app
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    command: >
+      sh -c "python -m src.data.loader && 
+             streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
